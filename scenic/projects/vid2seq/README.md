@@ -25,7 +25,7 @@ The following command will install the required packages for Vid2Seq:
 $ pip install -r scenic/projects/vid2seq/requirements.txt
 ```
 
-Note that because this project relies on Scenic `train_lib_deprecated`, you need to downgrade your version of [Flax](https://github.com/google/flax) to 0.5 for compatibility.
+Note that because this project relies on Scenic `train_lib`, you need to downgrade your version of [Flax](https://github.com/google/flax) to 0.5 for compatibility.
 
 For evaluation, you need to download captioning metrics files from [this repository](https://github.com/antoyang/captioning-metrics) and put them in the `metrics` folder. Note you will also need to download JAVA and specify the location to your Jre java bin in the [main](main.py) file.
 

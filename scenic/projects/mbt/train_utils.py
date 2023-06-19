@@ -10,7 +10,7 @@ import jax
 import jax.numpy as jnp
 import ml_collections
 from scenic.common_lib import debug_utils
-from scenic.train_lib_deprecated import optimizers
+from scenic.train_lib import optimizers
 
 PyTree = Union[Mapping[str, Mapping], Any]
 PRNGKey = jnp.ndarray
@@ -61,7 +61,7 @@ def initialize_model(
 ) -> Tuple[PyTree, PyTree, int, Optional[float]]:
   """Initializes parameters and model state.
 
-  This function is branched from scenic/train_lib_deprecated/train_utils.py.
+  This function is branched from scenic/train_lib/train_utils.py.
   The difference is that here the input_spec is a dictionary while it is a
   sequence in the original implementation.
 
