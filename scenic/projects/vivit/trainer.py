@@ -73,8 +73,9 @@ def train(
   # We jit this, such that the arrays that are created are created on the same
   # device as the input is, in this case the CPU. Else they'd be on device[0].
   lr_fn = lr_schedules.get_learning_rate_fn(config)
+  config1 = optimizer.get_optax_optimizer_config(config)
   optimizer = jax.jit(
-      optimizers.get_optimizer(config, learning_rate_fn=lr_fn).create, backend='cpu')(
+      optimizers.get_optimizer(config1, learning_rate_fn=lr_fn).init, backend='cpu')(
           params)
   rng, train_rng = jax.random.split(rng)
   train_state = train_utils.TrainState(
