@@ -311,18 +311,18 @@ def initialise_from_train_state(
   Returns:
     Updated train_state.
   """
-  if hasattr(train_state, 'optimizer'):
+  if hasattr(train_state, 'opt_state'):
     # Inspect and compare the parameters of the model with the init-model.
-    params = flax.core.unfreeze(train_state.optimizer.target)
-    train_state_keys = train_state.optimizer.target.keys()
+    params = flax.core.unfreeze(train_state.opt_state.target)
+    train_state_keys = train_state.opt_state.target.keys()
   else:
     params = flax.core.unfreeze(train_state.params)
     train_state_keys = train_state.params.keys()
-  if hasattr(restored_train_state, 'optimizer'):
+  if hasattr(restored_train_state, 'opt_state'):
     if config.init_from.get('checkpoint_format', 'scenic') == 'big_vision':
-      restored_params = restored_train_state.optimizer['target']
+      restored_params = restored_train_state.opt_state['target']
     else:
-      restored_params = restored_train_state.optimizer.target
+      restored_params = restored_train_state.opt_state.target
     restored_params = flax.core.unfreeze(restored_params)
   else:
     restored_params = flax.core.unfreeze(restored_train_state.params)
@@ -340,7 +340,7 @@ def initialise_from_train_state(
         # We don't have representation_size in the new model, so let's ignore
         #   if from the pretained model, in case it has it.
         # Note, removing the key from the dictionary is necessary to prevent
-        #   obscure errors from the Flax optimizer.
+        #   obscure errors from the Flax opt_state.
         params.pop(m_key, None)
       else:
         assert restored_model_cfg.model.representation_size
@@ -373,9 +373,9 @@ def initialise_from_train_state(
   if log_initialised_param_shapes:
     logging.info('Parameter summary after initialising from train state')
     debug_utils.log_param_shapes(params)
-  if hasattr(train_state, 'optimizer'):
+  if hasattr(train_state, 'opt_state'):
     return train_state.replace(
-        optimizer=train_state.optimizer.replace(
+        opt_state=train_state.opt_state.replace(
             target=flax.core.freeze(params)))
   else:
     return train_state.replace(params=flax.core.freeze(params))
