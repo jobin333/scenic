@@ -80,10 +80,11 @@ def train(
   rng, train_rng = jax.random.split(rng)
   train_state = train_utils.TrainState(
       global_step=0,
-      optimizer=optimizer,
+      opt_state=optimizer,
       model_state=model_state,
       rng=train_rng,
-      accum_train_time=0)
+      #accum_train_time=0
+      )
   start_step = train_state.global_step
   if config.checkpoint:
     train_state, start_step = train_utils.restore_checkpoint(
